@@ -86,7 +86,7 @@ let rec private waitForResults (sessionId:Guid) lastResponse triesRemaining = as
     if triesRemaining = 0 then 
         return lastResponse
     else
-        do! Async.Sleep 5000 //don't want to hammer SkyScanner's API...
+        do! Async.Sleep 10000 //don't want to hammer SkyScanner's API...
 
         let! updatedSearchResults = getUpdateOnSearchSession sessionId
 
@@ -104,5 +104,5 @@ let SearchFlights searchRequest = async {
     if haveAllResults searchSession then
         return searchSession
     else
-        return! waitForResults searchSession.SessionKey searchSession 2
+        return! waitForResults searchSession.SessionKey searchSession 1
 }

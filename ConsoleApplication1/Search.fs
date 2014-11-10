@@ -3,6 +3,17 @@
 open Types
 open System
 open NLog
+open Api
+
+let private validOutboundDays = lazy ([DayOfWeek.Thursday; DayOfWeek.Friday; DayOfWeek.Saturday] |> Set.ofList)
+let private validInboundDays = lazy ([DayOfWeek.Friday; DayOfWeek.Saturday; DayOfWeek.Sunday; DayOfWeek.Monday] |> Set.ofList)
+let private minToMaxDaysToTravel = [14 .. 21]
+
+let GetPotentialFlightDates (fromDate:DateTime, toDate:DateTime) = seq {
+    for fromDay in 0 .. toDate.Subtract(fromDate).Days do if validOutboundDays.Value.Contains(fromDate.AddDays(float fromDay).DayOfWeek) then
+        for toDay in minToMaxDaysToTravel do if validInboundDays.Value.Contains(fromDate.AddDays(float (fromDay + toDay)).DayOfWeek) then
+            yield (fromDate.AddDays(float fromDay), fromDate.AddDays(float (fromDay + toDay)))
+}
 
 let private logger = LogManager.GetLogger("default")
 
@@ -53,21 +64,15 @@ let private isFlightResultSuitable (search:FlightSearch) (searchResult:SearchRes
     && searchResult.Outbound.NumberOfStops <= search.MaxStops
 
 
-let GetPotentialFlightDates (search:FlightSearch) = seq {
-    for fromDay in 0 .. search.ToDate.Subtract(search.FromDate).Days do
-        for toDay in search.NumDaysBetweenFlights do
-            yield (search.FromDate.AddDays(float fromDay), search.FromDate.AddDays(float (fromDay + toDay)))
-}
+let private searchForFlightsOn (search:FlightSearch) (apiRequest:ApiRequest) = async {
+    let outboundDateStr = apiRequest.OutboundDate.ToString("ddd dd/MM")
+    let inboundDateStr =  apiRequest.InboundDate.ToString("ddd dd/MM")
 
-let private searchForFlightsOn (search:FlightSearch) (outboundDate:DateTime, inboundDate:DateTime) = async {
-    let outboundDateStr = outboundDate.ToShortDateString()
-    let inboundDateStr =  inboundDate.ToShortDateString()
+    logger.Info(sprintf "Searching for flights to %s @ %s - %s.." apiRequest.Destination outboundDateStr inboundDateStr)
 
-    logger.Info(sprintf "Searching for %s - %s .." outboundDateStr inboundDateStr)
+    let! results = Api.SearchFlights apiRequest
 
-    let! results = Api.SearchFlights { OutboundDate = outboundDate; InboundDate = inboundDate; Destination = "BKK" }
-
-    logger.Info(sprintf "%i flights available for %s - %s" (results.Itineraries.Length) outboundDateStr inboundDateStr)
+    logger.Info(sprintf "%i flights available to %s for %s - %s " (results.Itineraries.Length)  apiRequest.Destination outboundDateStr inboundDateStr)
 
     if results.Itineraries.Length = 0 then 
         return []
@@ -87,16 +92,24 @@ let private searchForFlightsOn (search:FlightSearch) (outboundDate:DateTime, inb
 
 
 let FindSuitableFlights (search:FlightSearch) = async {
-    let potentialDateCombos = GetPotentialFlightDates search |> List.ofSeq
-    logger.Info(sprintf "Searching %i date combinations" (potentialDateCombos.Length))
 
-    let searchResultsForAllDateCombos = 
-        potentialDateCombos
-        |> List.map (fun x -> searchForFlightsOn search x |> Async.RunSynchronously)
+    let dateAndDestinationCombinations = seq {
+        for (outboundDate, inboundDate) in search.FlightDatesToSearch do
+            for destination in search.Destinations do 
+                yield { OutboundDate = outboundDate; InboundDate = inboundDate; Destination = destination }
+    }
+
+    logger.Info(sprintf "Searching %i date & location combinations" ((dateAndDestinationCombinations) |> Seq.length))
+
+    let! searchResultsForAllDateCombos = 
+        dateAndDestinationCombinations
+        |> Seq.map (searchForFlightsOn search)
+        |> Async.Parallel
     
 
     let allSearchResults =
         searchResultsForAllDateCombos
+        |> List.ofArray
         |> List.reduce (fun acc x -> x @ acc)
 
     logger.Info(sprintf "Returned %i total search results" allSearchResults.Length)

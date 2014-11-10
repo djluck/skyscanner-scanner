@@ -4,17 +4,15 @@ open Search
 open System
 
 
-
 [<EntryPoint>]
 let main argv = 
+
     let request = { 
-        FromDate = new DateTime(2015, 1, 25)
-        ToDate = new DateTime(2015, 3, 1)
+        FlightDatesToSearch = Search.GetPotentialFlightDates(new DateTime(2015, 1, 20), new DateTime(2015, 3, 21)) |> List.ofSeq
         MaxFlightTime = new TimeSpan(22, 0, 0)
         MaxStops = 2
         MaxPrice = 650m
-        NumDaysBetweenFlights = [14 .. 22]
-        Destinations = ["REP"; "PNH"]
+        Destinations = ["HAN"; "SGN"]
     }
     let result = Search.FindSuitableFlights request |> Async.RunSynchronously
     printfn "%A" result
