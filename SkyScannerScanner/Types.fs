@@ -3,7 +3,7 @@
 open System
 
 type FlightSearch = { 
-    FlightDatesToSearch : List<DateTime * DateTime>
+    FlightDatesToSearchBetween : List<DateTime * DateTime>
     MaxFlightTime : TimeSpan
     MaxStops : int
     MaxPrice: Decimal
