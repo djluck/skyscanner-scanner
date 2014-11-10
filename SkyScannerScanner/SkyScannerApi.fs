@@ -1,4 +1,4 @@
-﻿module Api
+﻿module SkyScannerApi
 
 open System
 open RestSharp
@@ -171,6 +171,25 @@ type SkyScannerApi () =
 
 
 type CachingSkyScannerApi (api:ISkyScannerApi) =
+    let getCachedResponse request = async {
+        None
+    }
+
+    let cacheResponse response =    
+        ()
+    
+    interface ISkyScannerApi with
+        member this.SearchFlights request = async {
+            let! cachedResponse = getCachedResponse request
+            match cachedResponse with
+            | Some response -> return response
+            | None ->
+                let! response = api.SearchFlights(request)
+                cacheResponse response
+                return response
+        }
+
+type LimitingSkyScannerApi (api:ISkyScannerApi, maxCallsPerHour:int) =
     interface ISkyScannerApi with
         member this.SearchFlights request = async {
             

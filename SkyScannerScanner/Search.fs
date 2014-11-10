@@ -3,7 +3,7 @@
 open Types
 open System
 open NLog
-open Api
+open SkyScannerApi
 
 let private idealOutboundDays = lazy ([DayOfWeek.Thursday; DayOfWeek.Friday; DayOfWeek.Saturday] |> Set.ofList)
 let private idealInboundDays = lazy ([DayOfWeek.Sunday; DayOfWeek.Monday] |> Set.ofList)
