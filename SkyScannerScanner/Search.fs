@@ -22,45 +22,7 @@ let GetIdealFlightDates (fromDate:DateTime, toDate:DateTime) = seq {
 }
 
 let private logger = LogManager.GetLogger("default")
-
-let private createOutboundLeg (apiResults:Api.SkyScanner.Root) legId = 
-    let apiLeg = 
-        apiResults.OutboundItineraryLegs
-        |> Array.find (fun x-> x.Id = legId)
-
-    { 
-        Duration = TimeSpan.FromMinutes(float apiLeg.Duration)
-        NumberOfStops = apiLeg.StopsCount
-        DepartsAt = apiLeg.DepartureDateTime
-    }
-
-let private createInboundLeg (apiResults:Api.SkyScanner.Root) legId = 
-    let apiLeg = 
-        apiResults.InboundItineraryLegs
-        |> Array.find (fun x-> x.Id = legId)
-
-    { 
-        Duration = TimeSpan.FromMinutes(float apiLeg.Duration)
-        NumberOfStops = apiLeg.StopsCount
-        DepartsAt = apiLeg.DepartureDateTime
-    }
-
-
-let private getSearchResultsFromItinerary (apiResults:Api.SkyScanner.Root) (quotes:Map<int, Api.SkyScanner.Quote>) (itinerary:Api.SkyScanner.Itinerary) = 
-    let quotes = 
-        itinerary.PricingOptions
-        |> Array.map (fun x -> x.QuoteIds |> List.ofArray)
-        |> Array.fold (fun acc x -> x @ acc) List.Empty
-        |> List.map (fun quoteId -> quotes.[quoteId])
-
-    quotes
-        |> List.map (fun quote ->
-            {
-                Outbound =  (createOutboundLeg apiResults) itinerary.OutboundLegId
-                Inbound = (createInboundLeg apiResults) itinerary.InboundLegId
-                Price = quote.Price
-            }
-        )
+let private skyScannerApi = new CachingSkyScannerApi(new SkyScannerApi()) :> ISkyScannerApi
 
 let private isFlightResultSuitable (search:FlightSearch) (searchResult:SearchResult) = 
     searchResult.Inbound.Duration < search.MaxFlightTime 
@@ -70,29 +32,18 @@ let private isFlightResultSuitable (search:FlightSearch) (searchResult:SearchRes
     && searchResult.Outbound.NumberOfStops <= search.MaxStops
 
 
-let private searchForFlightsOn (search:FlightSearch) (apiRequest:ApiRequest) = async {
+let private searchForFlightsOn (search:FlightSearch) apiRequest = async {
     let outboundDateStr = apiRequest.OutboundDate.ToString("ddd dd/MM")
     let inboundDateStr =  apiRequest.InboundDate.ToString("ddd dd/MM")
 
     logger.Info(sprintf "Searching for flights to %s @ %s - %s.." apiRequest.Destination outboundDateStr inboundDateStr)
 
-    let! results = Api.SearchFlights apiRequest
+    let! results = skyScannerApi.SearchFlights(apiRequest)
 
-    logger.Info(sprintf "%i flights available to %s for %s - %s " (results.Itineraries.Length)  apiRequest.Destination outboundDateStr inboundDateStr)
+    logger.Info(sprintf "%i flights available to %s for %s - %s " (results.Length)  apiRequest.Destination outboundDateStr inboundDateStr)
 
-    if results.Itineraries.Length = 0 then 
-        return []
-    else
-        let quotesMap =
-            results.Quotes 
-            |> Array.map (fun x -> (x.Id, x))
-            |> Map.ofArray
-
-        return results.Itineraries
-            |> List.ofArray
-            |> List.map (getSearchResultsFromItinerary results quotesMap)
-            |> List.reduce (fun acc x -> x @ acc)
-            |> List.filter (isFlightResultSuitable search)
+    return results 
+        |> List.filter (isFlightResultSuitable search)
 }
 
 let FindSuitableFlights (search:FlightSearch) = async {
