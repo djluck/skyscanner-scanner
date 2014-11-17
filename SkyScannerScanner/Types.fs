@@ -17,6 +17,7 @@ type Leg = {
 }
 
 type SearchResult = {
+    Destination: string
     Inbound: Leg
     Outbound: Leg
     Price: Decimal
