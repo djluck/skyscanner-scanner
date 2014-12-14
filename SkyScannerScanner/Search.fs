@@ -5,9 +5,9 @@ open System
 open NLog
 open SkyScannerApi
 
-let private idealOutboundDays = lazy ([DayOfWeek.Thursday; DayOfWeek.Friday; DayOfWeek.Saturday] |> Set.ofList)
-let private idealInboundDays = lazy ([DayOfWeek.Saturday; DayOfWeek.Sunday; DayOfWeek.Monday] |> Set.ofList)
-let private idealNumberOfDaysToTravel = [13 .. 18]
+let private idealOutboundDays = lazy ([DayOfWeek.Wednesday; DayOfWeek.Thursday; DayOfWeek.Friday; DayOfWeek.Saturday] |> Set.ofList)
+let private idealInboundDays = lazy ([DayOfWeek.Saturday; DayOfWeek.Sunday; DayOfWeek.Monday; DayOfWeek.Tuesday] |> Set.ofList)
+let private idealNumberOfDaysToTravel = [14 .. 18]
 let private isIdealOutboundDay (outboundDate:DateTime) = idealOutboundDays.Value.Contains(outboundDate.DayOfWeek)
 let private isIdealInboundDay (inboundDate:DateTime) = idealInboundDays.Value.Contains(inboundDate.DayOfWeek)
 
@@ -21,7 +21,7 @@ let GetIdealFlightDates (fromDate:DateTime, toDate:DateTime) = seq {
                     yield (outboundDate, inboundDate)
 }
 
-let private logger = LogManager.GetLogger("default")
+let private logger = LogManager.GetLogger("Search")
 
 let private isFlightResultSuitable (search:FlightSearch) (searchResult:SearchResult) = 
     searchResult.Inbound.Duration < search.MaxFlightTime 
@@ -35,20 +35,20 @@ let private searchForFlightsOn (search:FlightSearch) apiRequest = async {
     let outboundDateStr = apiRequest.OutboundDate.ToString("ddd dd/MM")
     let inboundDateStr =  apiRequest.InboundDate.ToString("ddd dd/MM")
 
+    logger.Info(sprintf "Searching for flights: %A" apiRequest)
+
     let cachedResult = MongoCaching.GetSearchResult apiRequest
+
     match cachedResult with 
     | Some result ->
-        return result
+        return result |> List.filter (isFlightResultSuitable search)
     | None ->
-        logger.Info(sprintf "Searching for flights to %s @ %s - %s.." apiRequest.Destination outboundDateStr inboundDateStr)
-    
         let! results = SkyScannerApi.SearchFlights(apiRequest)
         match results with
         | Some r ->
-            logger.Info(sprintf "%i flights available to %s for %s - %s " (r.Length) apiRequest.Destination outboundDateStr inboundDateStr)
+            MongoCaching.StoreSearchResult apiRequest results
             return r |> List.filter (isFlightResultSuitable search)
         | None ->
-            logger.Warn(sprintf "No flight found to %s for %s - %s" apiRequest.Destination outboundDateStr inboundDateStr)
             return []
 }
 

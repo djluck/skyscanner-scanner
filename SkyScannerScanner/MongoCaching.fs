@@ -19,7 +19,7 @@ type MongoCacheRecord = {
 
 
 
-let private logger = LogManager.GetLogger("default")
+let private logger = LogManager.GetLogger("Caching")
 let private connectionString = "mongodb://localhost"
 let private client = MongoClient() :> IMongoClient
 let private database = client.GetDatabase("SkyScanner")
@@ -40,9 +40,14 @@ let GetSearchResult (apiRequest:SkyScannerApi.ApiRequest) =
 
     let result = collection.Find(query)
     match result with
-    | r when r |> Seq.length = 1 -> ((r |> Seq.head)).SearchResults
-    | r when r |> Seq.length > 1 -> failwith "Too many cache results"
-    | _ -> None
+    | r when r |> Seq.length = 1 -> 
+        logger.Debug(sprintf "Hit for %A" apiRequest)
+        ((r |> Seq.head)).SearchResults
+    | r when r |> Seq.length > 1 -> 
+        failwith "Too many cache results"
+    | _ -> 
+        logger.Debug(sprintf "Miss for %A" apiRequest)
+        None
 
 
 
@@ -55,5 +60,7 @@ let StoreSearchResult apiRequest searchResults =
     }
     collection.Insert(toInsert)
         |> ignore
+
+    logger.Debug(sprintf "Cached %i results for %A" (searchResults |> Option.get).Length apiRequest)
     ()
 

@@ -1,0 +1,1051 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>FSharp.MongoDB.Driver</name></assembly>
+<members>
+<member name="M:FSharp.MongoDB.Driver.IMongoClient.GetDatabase(System.String)">
+ <summary>Returns the specified database.</summary>
+ <param name="db">The database name.</param>
+</member>
+<member name="T:FSharp.MongoDB.Driver.IMongoClient">
+<summary>
+ Represents a client of the cluster.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.MongoDB.Driver.IMongoDatabase.GetCollection``1(System.String)">
+ <summary>
+ Returns the specified collection, parametrized by the generic type.
+ </summary>
+ <param name="cltcn">The collection name.</param>
+</member>
+<member name="M:FSharp.MongoDB.Driver.IMongoDatabase.GetCollection(System.String)">
+ <summary>Returns the specified collection.</summary>
+ <param name="cltcn">The collection name.</param>
+ <returns>Returns </returns>
+</member>
+<member name="M:FSharp.MongoDB.Driver.IMongoDatabase.Drop">
+ <summary>Drops the specified database.</summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.IMongoDatabase">
+<summary>
+ Represents a database of the cluster.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="P:FSharp.MongoDB.Driver.MongoBackbone.Session">
+<summary>
+ A session for use on an entire cluster.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.MongoBackbone">
+<summary>
+ The system that handles both database- and collection-level operations
+ on a cluster. Meant to provide a consistent interface for use by
+ &lt;see cref=&quot;MongoDatabase&quot; /&gt; and &lt;see cref=&quot;MongoCollection&quot; /&gt;,
+ rather than have a dependency on the Core .NET driver in those modules too.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.MongoDB.Driver.Scope`1.Get(Microsoft.FSharp.Core.FSharpOption{MongoDB.Driver.Core.Protocol.Messages.QueryFlags})">
+<summary>
+ Executes the find operation with the previously supplied settings.
+ Returns an enumerator for explicit iteration, rather than use in a for loop.
+</summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Scope`1">
+<summary>
+ Represents a view over a particular collection.
+ Immutable structure that is able to be chained with other methods
+ that can invoke operations against the database.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Backbone.AllSettings">
+<summary>
+ Combined settings for the &lt;see cref=&quot;MongoBackbone&quot; /&gt;.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Backbone.ClusterableServerSettings">
+<summary>
+ Settings for the &lt;see cref=&quot;ClusterableServerFactory&quot; /&gt;.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Backbone.ConnectionPoolSettings">
+<summary>
+ Settings for the &lt;see cref=&quot;ConnectionPoolChannelProviderFactory&quot; /&gt;.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Backbone.StreamSettings">
+<summary>
+ Settings for the &lt;see cref=&quot;NetworkStreamFactory&quot; /&gt;.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Backbone.DefaultSettings.all">
+<summary>
+ The default &lt;see cref=&quot;MongoBackbone&quot; /&gt; settings.
+ Uses the default settings of the other factories,
+ and connects to a standalone server on localhost at the default port.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Backbone.DefaultSettings.clusterableServer">
+<summary>
+ The default &lt;see cref=&quot;ClusterableServerFactory&quot; /&gt; settings.
+ Designed to override defaults for only the specific fields.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Backbone.DefaultSettings.connectionPool">
+<summary>
+ The default &lt;see cref=&quot;ConnectionPoolChannelProviderFactory&quot; /&gt; settings.
+ Designed to override defaults for only the specific fields.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Backbone.DefaultSettings.stream">
+<summary>
+ The default &lt;see cref=&quot;NetworkStreamFactory&quot; /&gt; settings.
+ Designed to override defaults for only the specific fields.
+</summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Backbone.DefaultSettings">
+<summary>
+ Contains the default settings for the various factories
+ and &lt;see cref=&quot;MongoBackbone&quot; /&gt;.
+</summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Backbone">
+<summary>
+ Provides configuration of the &lt;see cref=&quot;MongoBackbone&quot; /&gt;.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Client.Settings">
+<summary>
+ Settings for the &lt;see cref=&quot;MongoClient&quot; /&gt;.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Client.defaultSettings">
+<summary>
+ The default settings for the &lt;see cref=&quot;MongoClient&quot; /&gt;.
+</summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Client">
+<summary>
+ Provides configuration of the &lt;see cref=&quot;MongoClient&quot; /&gt;.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression.MongoBuilder">
+ <summary>
+ The type used to support the MongoDB query and update syntax from F#.
+ </summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression.MongoOperationResult`1">
+<summary>
+ Represents different cases from the overall `mongo { ... }` expression.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression.MongoDeferredOperation">
+<summary>
+ Represents different operation cases from using the `defer` keyword.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression.TraverseResult">
+<summary>
+ Represents different possible results from traversing a quotation.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression.TransformResult">
+<summary>
+ Represents different possible results from transforming a quotation.
+</summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression.IMongoDeferrable`1">
+ <summary>
+ A result of a query or update operation.
+ This type is used to return the expressions as <c>BsonDocument</c>s,
+ rather than actually executing against the database.
+ </summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression.IMongoEachUpdatable`1">
+ <summary>
+ An input into a update operation.
+ This type is used to support the MongoDB <c>$each</c> update syntax.
+ </summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression.IMongoUpdatable`1">
+ <summary>
+ An input into a update operation.
+ This type is used to support the MongoDB update syntax.
+ </summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression.IMongoQueryable`1">
+ <summary>
+ An input into a query operation.
+ This type is used to support the MongoDB query syntax.
+ </summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Expression">
+
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.textSearchWithOptions``1(System.String,FSharp.MongoDB.Driver.ScopeModule.TextSearchOptions,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Performs text search with the specified phrase and options
+ using the current <see cref="Scope" />.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.textSearch``1(System.String,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Performs text search with the specified phrase
+ using the current <see cref="Scope" />.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.explain``1(FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns information about the query plan,
+ as represented by the current <see cref="Scope" />.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.replaceOne``2(``0,FSharp.MongoDB.Driver.Scope{``1})">
+ <summary>
+ Replaces a single document satisfying the predicate
+ of the current <see cref="Scope" />
+ according to the supplied update modifiers.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.replace``2(``0,FSharp.MongoDB.Driver.Scope{``1})">
+ <summary>
+ Replaces all of the documents satisfying the predicate
+ of the current <see cref="Scope" />
+ according to the supplied update modifiers.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.updateOne``2(``0,FSharp.MongoDB.Driver.Scope{``1})">
+ <summary>
+ Updates a single document satisfying the predicate
+ of the current <see cref="Scope" />
+ according to the supplied update modifiers.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.update``2(``0,FSharp.MongoDB.Driver.Scope{``1})">
+ <summary>
+ Updates all of the documents satisfying the predicate
+ of the current <see cref="Scope" />
+ according to the supplied update modifiers.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.removeOne``1(FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Removes a single document satisfying the predicate
+ of the current <see cref="Scope" />.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.remove``1(FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Removes all of the documents satisfying the predicate
+ of the current <see cref="Scope" />.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.count``1(FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns the number of documents satisfying the predicate
+ of the current <see cref="Scope" />.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.withWriteOptions``1(FSharp.MongoDB.Driver.ScopeModule.WriteOptions,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns a new <see cref="Scope" /> with the write options applied.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.withReadPreference``1(MongoDB.Driver.Core.ReadPreference,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns a new <see cref="Scope" /> with the read preference applied.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.withQueryOptions``1(FSharp.MongoDB.Driver.ScopeModule.QueryOptions,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns a new <see cref="Scope" /> with the query options applied.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.skip``1(System.Int32,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns a new <see cref="Scope" /> with the skip applied.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.limit``1(System.Int32,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns a new <see cref="Scope" /> with the limit applied.
+ Used with the number of documents found, updated, or removed.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.sort``1(MongoDB.Bson.BsonDocument,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns a new <see cref="Scope" /> with the sort order applied.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.fields``1(MongoDB.Bson.BsonDocument,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns a new <see cref="Scope" /> with the projection applied.
+ </summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Fluent.ScopeModule.find``1(MongoDB.Bson.BsonDocument,FSharp.MongoDB.Driver.Scope{``0})">
+ <summary>
+ Returns a new <see cref="Scope" /> with the specified filter.
+ </summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Fluent.ScopeModule">
+ <summary>Basic operations on the <see cref="Scope" /> type.</summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Fluent">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Helpers">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operation.RemoveSettings">
+<summary>
+ Settings for the &lt;see cref=&quot;RemoveOperation&quot; /&gt;.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operation.UpdateSettings">
+<summary>
+ Settings for the &lt;see cref=&quot;UpdateOperation&quot; /&gt;.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operation.QuerySettings">
+<summary>
+ Settings for the &lt;see cref=&quot;QueryOperation&quot; /&gt;.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operation.InsertSettings">
+<summary>
+ Settings for the &lt;see cref=&quot;InsertOperation&quot; /&gt;.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operation.CommandSettings">
+<summary>
+ Settings for the &lt;see cref=&quot;GenericCommandOperation&quot; /&gt;.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Operation.DefaultSettings.remove">
+<summary>
+ The defaults settings for the &lt;see cref=&quot;RemoveOperation&quot; /&gt;.
+ Designed to override defaults for only the specific fields.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Operation.DefaultSettings.update">
+<summary>
+ The defaults settings for the &lt;see cref=&quot;UpdateOperation&quot; /&gt;.
+ Designed to override defaults for only the specific fields.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Operation.DefaultSettings.query">
+<summary>
+ The defaults settings for the &lt;see cref=&quot;QueryOperation&quot; /&gt;.
+ Designed to override defaults for only the specific fields.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Operation.DefaultSettings.insert">
+<summary>
+ The defaults settings for the &lt;see cref=&quot;InsertOperation&quot; /&gt;.
+ Designed to override defaults for only the specific fields.
+</summary>
+</member>
+<member name="P:FSharp.MongoDB.Driver.Operation.DefaultSettings.command">
+<summary>
+ The default settings for the &lt;see cref=&quot;GenericCommandOperation&quot; /&gt;.
+ Designed to override defaults for only the specific fields.
+</summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operation.DefaultSettings">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operation">
+<summary>
+ Provides configuration of the database- and collection-level operations.
+</summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Operations.CollectionOps.MongoBackbone.Remove``1(FSharp.MongoDB.Driver.MongoBackbone,System.String,System.String,``0,MongoDB.Driver.Core.Protocol.Messages.DeleteFlags,FSharp.MongoDB.Driver.Operation.RemoveSettings)">
+ <summary>
+ Removes the documents from the specified collection
+ that satisfy the predicate.
+ </summary>
+ <param name="db">The database name.</param>
+ <param name="clctn">The collection name.</param>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Operations.CollectionOps.MongoBackbone.Update``2(FSharp.MongoDB.Driver.MongoBackbone,System.String,System.String,``0,``1,MongoDB.Driver.Core.Protocol.Messages.UpdateFlags,FSharp.MongoDB.Driver.Operation.UpdateSettings)">
+ <summary>
+ Updates the documents of the specified collection
+ that satisfy the predicate.
+ </summary>
+ <param name="db">The database name.</param>
+ <param name="clctn">The collection name.</param>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Operations.CollectionOps.MongoBackbone.Find``1(FSharp.MongoDB.Driver.MongoBackbone,System.String,System.String,System.Object,System.Object,System.Int32,System.Int32,MongoDB.Driver.Core.Protocol.Messages.QueryFlags,FSharp.MongoDB.Driver.Operation.QuerySettings)">
+ <summary>
+ Returns a sequence of <c>'DocType</c> documents
+ from the specified collection that satisfy the predicate.
+ </summary>
+ <param name="db">The database name.</param>
+ <param name="clctn">The collection name.</param>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Operations.CollectionOps.MongoBackbone.Insert``1(FSharp.MongoDB.Driver.MongoBackbone,System.String,System.String,``0,MongoDB.Driver.Core.Protocol.Messages.InsertFlags,FSharp.MongoDB.Driver.Operation.InsertSettings)">
+ <summary>Inserts a single document into the specified collection.</summary>
+ <param name="db">The database name.</param>
+ <param name="clctn">The collection name.</param>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Operations.CollectionOps.MongoBackbone.BulkInsert``1(FSharp.MongoDB.Driver.MongoBackbone,System.String,System.String,System.Collections.Generic.IEnumerable{``0},MongoDB.Driver.Core.Protocol.Messages.InsertFlags,FSharp.MongoDB.Driver.Operation.InsertSettings)">
+ <summary>Inserts a batch of documents into the specified collection.</summary>
+ <param name="db">The database name.</param>
+ <param name="clctn">The collection name.</param>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Operations.CollectionOps.MongoBackbone.DropCollection(FSharp.MongoDB.Driver.MongoBackbone,System.String,System.String)">
+ <summary>Drops the specified collection.</summary>
+ <param name="db">The database name.</param>
+ <param name="clctn">The collection name.</param>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operations.CollectionOps">
+<summary>
+ Collection-level operations.
+</summary>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Operations.DatabaseOps.MongoBackbone.DropDatabase(FSharp.MongoDB.Driver.MongoBackbone,System.String)">
+ <summary>Drops the specified database.</summary>
+ <param name="db">The database name</param>
+</member>
+<member name="M:FSharp.MongoDB.Driver.Operations.DatabaseOps.MongoBackbone.Run``1(FSharp.MongoDB.Driver.MongoBackbone,System.String,``0)">
+ <summary>Runs a command on the specified database.</summary>
+ <param name="db">The database name.</param>
+ <param name="cmd">The command to execute.</param>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operations.DatabaseOps">
+<summary>
+ Database-level operations.
+</summary>
+</member>
+<member name="T:FSharp.MongoDB.Driver.Operations">
+<summary>
+ Basic operations on the cluster.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Quotations.CustomOps">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Quotations.Helpers">
+
+</member>
+<member name="M:FSharp.MongoDB.Driver.Quotations.Impl.bson``2(Microsoft.FSharp.Quotations.FSharpExpr{Microsoft.FSharp.Core.FSharpFunc{``0,``1}})">
+ <summary>
+ Traverses an expression and constructs an equivalent <c>BsonDocument</c> based on it structure.
+ When the quotation has a type signature of <c>'a -> bool</c>, then it is parsed as a query.
+ When the quotation has a type signature of <c>'a -> unit list</c>
+ or <c>'a -> 'a</c>, then it is parsed as an update.
+ </summary>
+ <param name="q">The code quotation to traverse.</param>
+ <returns>A <c>BsonDocument</c> representing the query or update operation.</returns>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Quotations.Impl">
+ <summary>
+ Contains definition of <c>bson</c> function to parse quotations.
+ </summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Quotations.Query">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.Quotations.Update">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.ScopeModule.DefaultOptions">
+
+</member>
+<member name="T:FSharp.MongoDB.Driver.ScopeModule">
+
+</member>
+</members>
+</doc>

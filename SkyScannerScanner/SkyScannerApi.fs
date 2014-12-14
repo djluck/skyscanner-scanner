@@ -15,14 +15,14 @@ type ApiRequest = {
 }
 
 let private client = new RestClient("http://www.skyscanner.net/dataservices/")
-let private logger = LogManager.GetLogger("default")
+let private logger = LogManager.GetLogger("SkyScannerApi")
 
 let private executeAsync request = async {
     let! response = client.ExecuteTaskAsync(request) |> Async.AwaitTask 
 
     match response.ResponseStatus with
     | ResponseStatus.Completed -> return response
-    | _ -> return failwith "Response did not complete succesfull"
+    | _ -> return failwith "Response did not complete succesfully"
 }
 
 let private failOnStatusCode (statusCode:HttpStatusCode) = failwith (sprintf "Response had status code of %O" statusCode)
@@ -59,7 +59,6 @@ let private createSearchSession (searchRequest:ApiRequest) = async {
 
     match response.StatusCode with 
     | HttpStatusCode.Created -> return Some (SkyScanner.Parse(response.Content))
-    | HttpStatusCode.NotFound -> return None
     | _ -> return failOnStatusCode response.StatusCode
 }
 
@@ -123,7 +122,7 @@ let private createInboundLeg (apiResults:SkyScanner.Root) legId =
     }
 
 
-let private getSearchResultsFromItinerary (apiResults:SkyScanner.Root) (quotes:Map<int, SkyScanner.Quote>) (itinerary:SkyScanner.Itinerary) = 
+let private getSearchResultsFromItinerary (request:ApiRequest) (apiResults:SkyScanner.Root) (quotes:Map<int, SkyScanner.Quote>) (itinerary:SkyScanner.Itinerary) = 
     let quotes = 
         itinerary.PricingOptions
         |> Array.map (fun x -> x.QuoteIds |> List.ofArray)
@@ -136,12 +135,12 @@ let private getSearchResultsFromItinerary (apiResults:SkyScanner.Root) (quotes:M
                 Outbound =  (createOutboundLeg apiResults) itinerary.OutboundLegId
                 Inbound = (createInboundLeg apiResults) itinerary.InboundLegId
                 Price = quote.Price
-                Destination = ""
+                Destination = request.Destination
             }
         )
 
 
-let private transformResults (results:SkyScanner.Root) =
+let private transformResults (request:ApiRequest) (results:SkyScanner.Root) =
     if results.Itineraries.Length = 0 then 
         []
     else
@@ -152,19 +151,32 @@ let private transformResults (results:SkyScanner.Root) =
 
         results.Itineraries
             |> List.ofArray
-            |> List.map (getSearchResultsFromItinerary results quotesMap)
+            |> List.map (getSearchResultsFromItinerary request results quotesMap)
             |> List.reduce (fun acc x -> x @ acc)
 
-let SearchFlights request = async {
-    let! searchSession = createSearchSession request
+let private sendRequestAndAwaitResponse request = async {
+     let! searchSession = createSearchSession request
 
     match searchSession with 
-    | Some session when haveAllResults session -> return Some (transformResults session)
+    | Some session when haveAllResults session -> return Some (transformResults request session)
     | Some session -> 
         let! rawResults = (waitForResults session.SessionKey session 2)
-        return Some (transformResults rawResults)
+        return Some (transformResults request rawResults)
     | None ->
         return None 
+}
+
+let SearchFlights request = async {
+    logger.Info(sprintf "Scanning SkyScanner for %A" request)
+    let! response = sendRequestAndAwaitResponse request
+
+    match response with 
+    | Some r -> 
+        logger.Info(sprintf "Found %i results for %A" r.Length request) |> ignore
+    | None ->
+        logger.Warn(sprintf "Found no results for %A") |> ignore
+
+    return response
 }
 
 //how do we limit requests in paralell 
