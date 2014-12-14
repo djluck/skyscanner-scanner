@@ -1,0 +1,3 @@
+[submodule "lib/mongo-fsharp-driver-prototype"]
+	path = lib/mongo-fsharp-driver-prototype
+	url = git@github.com:mongodbinc-interns/mongo-fsharp-driver-prototype.git

@@ -44,16 +44,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.MongoDB.Bson">
-      <HintPath>lib\FSharp.MongoDB.Bson.dll</HintPath>
+      <HintPath>..\..\lib\mongo-fsharp-driver-prototype\src\FSharp.MongoDB.Driver\bin\Debug\FSharp.MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.MongoDB.Driver">
-      <HintPath>lib\FSharp.MongoDB.Driver.dll</HintPath>
+      <HintPath>..\..\lib\mongo-fsharp-driver-prototype\src\FSharp.MongoDB.Driver\bin\Debug\FSharp.MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
-      <HintPath>lib\MongoDB.Bson.dll</HintPath>
+      <HintPath>..\..\lib\mongo-fsharp-driver-prototype\src\FSharp.MongoDB.Driver\bin\Debug\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver.Core">
-      <HintPath>lib\MongoDB.Driver.Core.dll</HintPath>
+      <HintPath>..\..\lib\mongo-fsharp-driver-prototype\src\FSharp.MongoDB.Driver\bin\Debug\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
